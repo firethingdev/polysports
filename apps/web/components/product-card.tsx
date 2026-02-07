@@ -3,13 +3,14 @@
 import * as React from 'react';
 import { Button } from '@workspace/ui/components/button';
 import { ShoppingCart } from 'lucide-react';
+import Link from 'next/link';
 
 interface ProductCardProps {
   id: string;
   name: string;
   description: string;
   price: number;
-  image: string;
+  images: string[];
   stock: number;
   onAddToCart: () => void;
 }
@@ -19,21 +20,27 @@ export function ProductCard({
   name,
   description,
   price,
-  image,
+  images,
   stock,
   onAddToCart,
 }: ProductCardProps) {
   return (
     <div className='rounded-lg border border-border bg-card p-4 shadow-sm hover:shadow-md transition-shadow'>
-      <div className='aspect-square mb-4 overflow-hidden rounded-md bg-secondary'>
-        <img
-          src={image}
-          alt={name}
-          className='h-full w-full object-cover hover:scale-105 transition-transform'
-        />
-      </div>
+      <Link href={`/products/${id}`}>
+        <div className='aspect-square mb-4 overflow-hidden rounded-md bg-secondary cursor-pointer'>
+          <img
+            src={images[0]}
+            alt={name}
+            className='h-full w-full object-cover hover:scale-105 transition-transform'
+          />
+        </div>
+      </Link>
       <div className='space-y-2'>
-        <h3 className='font-semibold text-sm line-clamp-2'>{name}</h3>
+        <Link href={`/products/${id}`}>
+          <h3 className='font-semibold text-sm line-clamp-2 hover:underline cursor-pointer'>
+            {name}
+          </h3>
+        </Link>
         <p className='text-xs text-muted-foreground line-clamp-2'>
           {description}
         </p>

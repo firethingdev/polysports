@@ -7,7 +7,7 @@ import { Minus, Plus, Trash2 } from 'lucide-react';
 interface CartItemRowProps {
   productId: string;
   productName: string;
-  productImage: string;
+  productImages: string[];
   price: number;
   quantity: number;
   onQuantityChange: (quantity: number) => void;
@@ -17,7 +17,7 @@ interface CartItemRowProps {
 export function CartItemRow({
   productId,
   productName,
-  productImage,
+  productImages,
   price,
   quantity,
   onQuantityChange,
@@ -26,7 +26,7 @@ export function CartItemRow({
   return (
     <div className='flex gap-4 py-4 border-b border-border'>
       <img
-        src={productImage}
+        src={productImages[0]}
         alt={productName}
         className='h-20 w-20 rounded-lg object-cover bg-secondary'
       />

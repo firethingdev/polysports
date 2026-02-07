@@ -50,7 +50,7 @@ export default function CartPage() {
               key={item.product.id}
               productId={item.product.id}
               productName={item.product.name}
-              productImage={item.product.image}
+              productImages={item.product.images}
               price={item.product.price}
               quantity={item.quantity}
               onQuantityChange={(quantity) =>
