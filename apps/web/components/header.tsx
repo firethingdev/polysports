@@ -11,7 +11,7 @@ interface HeaderProps {
 
 export function Header({ cartItemsCount = 0 }: HeaderProps) {
   return (
-    <header className='sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60'>
+    <header className='sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60'>
       <nav className='flex items-center justify-between h-16 px-4 md:px-6 max-w-7xl mx-auto'>
         <Link href='/' className='flex items-center gap-2 font-bold text-xl'>
           <ShoppingCart className='h-6 w-6' />

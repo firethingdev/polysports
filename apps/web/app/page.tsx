@@ -1,11 +1,11 @@
 import Link from 'next/link';
 import { Button } from '@workspace/ui/components/button';
-import { FeaturedProductsSection } from '@/components/featured-products-section';
+import { ProductsCarousel } from '@/components/products-carousel';
 import { ArrowRight, Zap, Package, Truck } from 'lucide-react';
 import { mockProducts } from '@/lib/data/mockProducts';
 
 export default function Page() {
-  const featuredProducts = mockProducts.slice(0, 4);
+  const featuredProducts = mockProducts.slice(0, 10);
 
   return (
     <>
@@ -37,7 +37,7 @@ export default function Page() {
               </div>
             </div>
             <div className='relative h-96 lg:h-full'>
-              <div className='absolute inset-0 bg-gradient-to-br from-primary/10 to-primary/5 rounded-2xl' />
+              <div className='absolute inset-0 bg-linear-to-br from-primary/10 to-primary/5 rounded-2xl' />
               <img
                 src='https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=600&h=400&fit=crop'
                 alt='Sports equipment'
@@ -106,7 +106,7 @@ export default function Page() {
             </Link>
           </div>
 
-          <FeaturedProductsSection products={featuredProducts} />
+          <ProductsCarousel products={featuredProducts} />
         </div>
       </section>
 
