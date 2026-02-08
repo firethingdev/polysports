@@ -2,22 +2,22 @@
 
 import React, { useState, useEffect } from 'react';
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow
-} from '@workspace/ui/components/table';
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@workspace/ui/components/accordion';
 import { Button } from '@workspace/ui/components/button';
 import { Input } from '@workspace/ui/components/input';
 import {
   Search,
-  Eye,
   Truck,
   CheckCircle,
   Clock,
-  Filter
+  Filter,
+  Calendar,
+  Package,
+  CreditCard
 } from 'lucide-react';
 import {
   Select,
@@ -26,21 +26,14 @@ import {
   SelectTrigger,
   SelectValue
 } from '@workspace/ui/components/select';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@workspace/ui/components/dialog';
 import { Order } from '@/types';
 import { mockOrders } from '@/lib/data/mockOrders';
 import { Badge } from '@workspace/ui/components/badge';
+import { Card, CardContent } from '@workspace/ui/components/card';
 
 export function OrderList() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
-  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
 
   useEffect(() => {
     // Initialize from localStorage or mock data
@@ -99,128 +92,139 @@ export function OrderList() {
           />
         </div>
         <div className="flex items-center gap-2">
-           <Button variant="outline" className="gap-2">
+           <Button variant="outline" className="gap-2 font-medium">
              <Filter className="h-4 w-4" />
              Filter
            </Button>
         </div>
       </div>
 
-      <div className="rounded-md border border-border bg-card">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Order ID</TableHead>
-              <TableHead>Date</TableHead>
-              <TableHead>Product(s)</TableHead>
-              <TableHead>Total</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {filteredOrders.map((order) => (
-              <TableRow key={order.id}>
-                <TableCell className="font-mono font-medium text-xs">{order.id}</TableCell>
-                <TableCell>{order.date}</TableCell>
-                <TableCell className="max-w-[200px] truncate">
-                  {order.items.map(i => i.product.name).join(', ')}
-                </TableCell>
-                <TableCell>${order.total.toFixed(2)}</TableCell>
-                <TableCell>
-                  <Select
-                    value={order.status}
-                    onValueChange={(value) => handleStatusChange(order.id, value as Order['status'])}
-                  >
-                    <SelectTrigger className={`h-8 w-[130px] ${getStatusColor(order.status)} font-medium border`}>
-                      <SelectValue>
-                        <div className="flex items-center">
-                          {getStatusIcon(order.status)}
-                          {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+      <div className="space-y-4">
+        {/* Header-like row for large screens */}
+        <div className="hidden lg:grid lg:grid-cols-12 px-6 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider bg-secondary/50 rounded-t-lg items-center divide-x divide-border border-x border-t border-border">
+          <div className="col-span-2 pl-2">Order ID</div>
+          <div className="col-span-2 pl-4">Date</div>
+          <div className="col-span-3 pl-4">Products</div>
+          <div className="col-span-2 pl-4">Total</div>
+          <div className="col-span-3 pl-4">Status</div>
+        </div>
+
+        <Accordion type="multiple" className="w-full space-y-2">
+          {filteredOrders.map((order) => (
+            <AccordionItem
+              key={order.id}
+              value={order.id}
+              className="border border-border rounded-lg bg-card overflow-hidden data-[state=open]:shadow-md transition-shadow"
+            >
+              <AccordionTrigger className="hover:no-underline px-6 py-4">
+                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 w-full text-left items-center pr-4">
+                    <div className="col-span-2 font-mono text-xs font-bold text-primary">
+                       {order.id}
+                    </div>
+                    <div className="col-span-2 text-sm text-muted-foreground flex items-center gap-2">
+                       <Calendar className="h-3.5 w-3.5" />
+                       {order.date}
+                    </div>
+                    <div className="col-span-3 text-sm truncate pr-2">
+                       {order.items.length} {order.items.length === 1 ? 'item' : 'items'}: {order.items.map(i => i.product.name).join(', ')}
+                    </div>
+                    <div className="col-span-2 font-semibold">
+                       ${order.total.toFixed(2)}
+                    </div>
+                    <div className="col-span-3" onClick={(e) => e.stopPropagation()}>
+                       <Select
+                        value={order.status}
+                        onValueChange={(value) => handleStatusChange(order.id, value as Order['status'])}
+                      >
+                        <SelectTrigger className={`h-8 w-full max-w-[140px] ${getStatusColor(order.status)} font-semibold border text-xs`}>
+                          <SelectValue>
+                            <div className="flex items-center">
+                              {getStatusIcon(order.status)}
+                              {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+                            </div>
+                          </SelectValue>
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="pending">
+                            <div className="flex items-center text-xs"><Clock className="h-3 w-3 mr-2" /> Pending</div>
+                          </SelectItem>
+                          <SelectItem value="shipped">
+                            <div className="flex items-center text-xs"><Truck className="h-3 w-3 mr-2" /> Shipped</div>
+                          </SelectItem>
+                          <SelectItem value="delivered">
+                            <div className="flex items-center text-xs"><CheckCircle className="h-3 w-3 mr-2" /> Delivered</div>
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                 </div>
+              </AccordionTrigger>
+              <AccordionContent className="px-6 pb-6">
+                <div className="pt-4 border-t border-border grid md:grid-cols-3 gap-8">
+                  <div className="md:col-span-2 space-y-4">
+                    <div className="flex items-center gap-2 text-sm font-semibold text-primary">
+                      <Package className="h-4 w-4" />
+                      Order Details
+                    </div>
+                    <Card className="bg-muted/30 border-none shadow-none">
+                      <CardContent className="p-0">
+                        <div className="divide-y divide-border/50">
+                          {order.items.map((item, idx) => (
+                            <div key={idx} className="flex justify-between items-center py-3 text-sm px-4">
+                              <div className="flex flex-col">
+                                <span className="font-medium">{item.product.name}</span>
+                                <span className="text-xs text-muted-foreground">Category: {item.product.category}</span>
+                              </div>
+                              <div className="flex items-center gap-8">
+                                <span className="text-muted-foreground">Qty: {item.quantity}</span>
+                                <span className="font-semibold text-right w-20">${(item.product.price * item.quantity).toFixed(2)}</span>
+                              </div>
+                            </div>
+                          ))}
                         </div>
-                      </SelectValue>
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="pending">
-                        <div className="flex items-center"><Clock className="h-3 w-3 mr-2" /> Pending</div>
-                      </SelectItem>
-                      <SelectItem value="shipped">
-                        <div className="flex items-center"><Truck className="h-3 w-3 mr-2" /> Shipped</div>
-                      </SelectItem>
-                      <SelectItem value="delivered">
-                        <div className="flex items-center"><CheckCircle className="h-3 w-3 mr-2" /> Delivered</div>
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
-                </TableCell>
-                <TableCell className="text-right">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => {
-                      setSelectedOrder(order);
-                      setIsDetailsOpen(true);
-                    }}
-                    className="gap-2"
-                  >
-                    <Eye className="h-4 w-4" />
-                    Details
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-            {filteredOrders.length === 0 && (
-              <TableRow>
-                <TableCell colSpan={6} className="h-24 text-center text-muted-foreground">
-                  No orders found.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
-
-      <Dialog open={isDetailsOpen} onOpenChange={setIsDetailsOpen}>
-        <DialogContent className="sm:max-w-[600px]">
-          <DialogHeader>
-            <DialogTitle>Order Details: {selectedOrder?.id}</DialogTitle>
-          </DialogHeader>
-          {selectedOrder && (
-            <div className="space-y-6">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <p className="text-sm text-muted-foreground">Order Date</p>
-                  <p className="font-medium">{selectedOrder.date}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">Status</p>
-                  <Badge className={getStatusColor(selectedOrder.status)}>
-                    {selectedOrder.status.toUpperCase()}
-                  </Badge>
-                </div>
-              </div>
-
-              <div className="space-y-3">
-                <p className="text-sm font-semibold border-b pb-2">Items</p>
-                {selectedOrder.items.map((item, idx) => (
-                  <div key={idx} className="flex justify-between items-center text-sm">
-                    <span>{item.product.name} x {item.quantity}</span>
-                    <span className="font-medium">${(item.product.price * item.quantity).toFixed(2)}</span>
+                      </CardContent>
+                    </Card>
                   </div>
-                ))}
-                <div className="flex justify-between items-center pt-3 border-t font-bold">
-                  <span>Total</span>
-                  <span>${selectedOrder.total.toFixed(2)}</span>
-                </div>
-              </div>
 
-              <div className="pt-4 border-t flex justify-end">
-                <Button onClick={() => setIsDetailsOpen(false)}>Close</Button>
-              </div>
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-2 text-sm font-semibold text-primary">
+                      <CreditCard className="h-4 w-4" />
+                      Summary
+                    </div>
+                    <div className="rounded-lg border border-border bg-muted/20 p-4 space-y-2">
+                      <div className="flex justify-between text-sm">
+                        <span className="text-muted-foreground">Subtotal</span>
+                        <span>${order.total.toFixed(2)}</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-muted-foreground">Shipping</span>
+                        <span className="text-emerald-500 font-medium">Free</span>
+                      </div>
+                      <div className="border-t border-border pt-2 mt-2 flex justify-between font-bold text-lg">
+                        <span>Total</span>
+                        <span className="text-primary">${order.total.toFixed(2)}</span>
+                      </div>
+                    </div>
+
+                    <div className="pt-2">
+                       <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest mb-1.5">Action</p>
+                       <Button variant="outline" size="sm" className="w-full shadow-sm text-xs h-9">
+                         View Invoice
+                       </Button>
+                    </div>
+                  </div>
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          ))}
+          {filteredOrders.length === 0 && (
+            <div className="h-32 flex flex-col items-center justify-center text-muted-foreground border border-dashed border-border rounded-lg bg-muted/10">
+               <Package className="h-8 w-8 mb-2 opacity-20" />
+               <p>No orders found matching your criteria.</p>
             </div>
           )}
-        </DialogContent>
-      </Dialog>
+        </Accordion>
+      </div>
     </div>
   );
 }

@@ -6,14 +6,9 @@ import {
   LayoutDashboard,
   Package,
   ShoppingCart,
-  Settings,
-  Menu,
-  ChevronLeft,
-  ChevronRight,
   LogOut,
   Home
 } from 'lucide-react';
-import { Button } from '@workspace/ui/components/button';
 import {
   Sidebar,
   SidebarContent,

@@ -1,5 +1,6 @@
 import { ProductList } from './product-list';
 
+
 export default function AdminProductsPage() {
   return (
     <div className="space-y-8">

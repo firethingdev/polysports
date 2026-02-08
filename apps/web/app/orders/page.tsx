@@ -44,7 +44,7 @@ export default function OrdersPage() {
             <ShoppingBag className='h-16 w-16 text-muted-foreground mx-auto mb-4 opacity-50' />
             <h1 className='text-3xl font-bold mb-2'>No Orders Yet</h1>
             <p className='text-muted-foreground mb-8'>
-              You haven't placed any orders. Start shopping to create your first
+              You haven&apos;t placed any orders. Start shopping to create your first
               order!
             </p>
             <Link href='/products'>
