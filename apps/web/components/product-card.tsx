@@ -30,7 +30,7 @@ export function ProductCard({
       <Link href={`/products/${id}`}>
         <div className='aspect-square mb-4 overflow-hidden rounded-md bg-secondary cursor-pointer'>
           <Image
-            src={images[0]}
+            src={images[0] || ''}
             alt={name}
             fill
             className='object-cover hover:scale-105 transition-transform'

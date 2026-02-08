@@ -126,7 +126,7 @@ export default function OrdersPage() {
                         className='flex gap-4 rounded border border-border bg-background p-4'
                       >
                         <Image
-                          src={item.product.images[0]}
+                          src={item.product.images[0] || ''}
                           alt={item.product.name}
                           width={64}
                           height={64}

@@ -27,7 +27,7 @@ export function CartItemRow({
   return (
     <div className='flex gap-4 py-4 border-b border-border'>
       <Image
-        src={productImages[0]}
+        src={productImages[0] || ''}
         alt={productName}
         width={80}
         height={80}
