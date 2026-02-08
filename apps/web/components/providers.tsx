@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { ThemeProvider as NextThemesProvider } from 'next-themes';
 import { CartProvider } from '@/context/CartContext';
+import { TooltipProvider } from '@workspace/ui/components/tooltip';
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
@@ -13,7 +14,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
       disableTransitionOnChange
       enableColorScheme
     >
-      <CartProvider>{children}</CartProvider>
+      <TooltipProvider>
+        <CartProvider>{children}</CartProvider>
+      </TooltipProvider>
     </NextThemesProvider>
   );
 }

@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import Link from 'next/link';
-import { ShoppingCart, Home, Package, History } from 'lucide-react';
+import { ShoppingCart, Home, Package, History, LayoutDashboard } from 'lucide-react';
 import { Button } from '@workspace/ui/components/button';
 
 interface HeaderProps {
@@ -37,6 +37,13 @@ export function Header({ cartItemsCount = 0 }: HeaderProps) {
             <Button variant='ghost' size='sm' className='gap-2'>
               <History className='h-4 w-4' />
               <span className='hidden sm:inline'>Orders</span>
+            </Button>
+          </Link>
+
+          <Link href='/admin'>
+            <Button variant='ghost' size='sm' className='gap-2'>
+              <LayoutDashboard className='h-4 w-4' />
+              <span className='hidden sm:inline'>Admin</span>
             </Button>
           </Link>
 

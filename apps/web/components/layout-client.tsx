@@ -2,10 +2,17 @@
 
 import { Header } from '@/components/header';
 import { useCart } from '@/context/CartContext';
+import { usePathname } from 'next/navigation';
 import React from 'react';
 
 export function LayoutClient({ children }: { children: React.ReactNode }) {
   const { items } = useCart();
+  const pathname = usePathname();
+  const isAdminPath = pathname.startsWith('/admin');
+
+  if (isAdminPath) {
+    return <>{children}</>;
+  }
 
   return (
     <>
