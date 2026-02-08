@@ -29,13 +29,7 @@ export function ProductCard({
     <div className='rounded-lg border border-border bg-card p-4 shadow-sm hover:shadow-md transition-shadow'>
       <Link href={`/products/${id}`}>
         <div className='aspect-square mb-4 overflow-hidden rounded-md bg-secondary cursor-pointer'>
-          <Image
-            src={images[0] || ''}
-            alt={name}
-            fill
-            className='object-cover hover:scale-105 transition-transform'
-            sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
-          />
+          <Image src={images[0] || ''} alt={name} width={200} height={200} />
         </div>
       </Link>
       <div className='space-y-2'>

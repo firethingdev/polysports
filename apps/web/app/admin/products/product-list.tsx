@@ -26,20 +26,40 @@ import {
 } from '@workspace/ui/components/alert-dialog';
 import { Badge } from '@workspace/ui/components/badge';
 import { Product } from '@/types';
-import { getStoredProducts, deleteProduct } from './lib/product-storage';
-
-const subscribe = () => () => {};
-const getSnapshot = () => true;
-const getServerSnapshot = () => false;
+import { getProducts, deleteProduct } from '@/app/actions/products';
 
 export function ProductList() {
-  const isMounted = React.useSyncExternalStore(
-    subscribe,
-    getSnapshot,
-    getServerSnapshot,
-  );
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+  const [productToDelete, setProductToDelete] = useState<string | null>(null);
 
-  if (!isMounted) {
+  React.useEffect(() => {
+    async function load() {
+      const data = await getProducts();
+      setProducts(data);
+      setLoading(false);
+    }
+    load();
+  }, []);
+
+  const handleDeleteClick = (id: string) => {
+    setProductToDelete(id);
+    setDeleteConfirmOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    if (productToDelete) {
+      await deleteProduct(productToDelete);
+      const data = await getProducts();
+      setProducts(data);
+      setProductToDelete(null);
+      setDeleteConfirmOpen(false);
+    }
+  };
+
+  if (loading) {
     return (
       <div className='rounded-md border border-border bg-card overflow-hidden h-96 flex items-center justify-center'>
         <div className='flex flex-col items-center gap-2'>
@@ -51,31 +71,6 @@ export function ProductList() {
       </div>
     );
   }
-
-  return <ProductListContent />;
-}
-
-function ProductListContent() {
-  const [products, setProducts] = useState<Product[]>(() =>
-    getStoredProducts(),
-  );
-  const [searchTerm, setSearchTerm] = useState('');
-  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
-  const [productToDelete, setProductToDelete] = useState<string | null>(null);
-
-  const handleDeleteClick = (id: string) => {
-    setProductToDelete(id);
-    setDeleteConfirmOpen(true);
-  };
-
-  const confirmDelete = () => {
-    if (productToDelete) {
-      deleteProduct(productToDelete);
-      setProducts(getStoredProducts());
-      setProductToDelete(null);
-      setDeleteConfirmOpen(false);
-    }
-  };
 
   const filteredProducts = products.filter(
     (p) =>
