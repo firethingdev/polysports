@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { Button } from '@workspace/ui/components/button';
 import { ProductsCarousel } from '@/components/products-carousel';
 import { ArrowRight, Zap, Package, Truck } from 'lucide-react';
@@ -38,10 +39,12 @@ export default function Page() {
             </div>
             <div className='relative h-96 lg:h-full'>
               <div className='absolute inset-0 bg-linear-to-br from-primary/10 to-primary/5 rounded-2xl' />
-              <img
+              <Image
                 src='https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=600&h=400&fit=crop'
                 alt='Sports equipment'
-                className='relative h-full w-full object-cover rounded-2xl'
+                fill
+                className='object-cover rounded-2xl'
+                priority
               />
             </div>
           </div>

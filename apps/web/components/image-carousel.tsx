@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import {
   Carousel,
   CarouselContent,
@@ -51,10 +52,13 @@ export function ImageCarousel({ images, alt }: ImageCarouselProps) {
             {images.map((image, index) => (
               <CarouselItem key={index}>
                 <div className='relative w-full aspect-square bg-muted rounded-lg overflow-hidden'>
-                  <img
+                  <Image
                     src={image}
                     alt={`${alt} - Image ${index + 1}`}
-                    className='w-full h-full object-cover'
+                    fill
+                    priority={index === 0}
+                    className='object-cover'
+                    sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 40vw'
                   />
 
                   {/* Image Counter */}
@@ -91,10 +95,12 @@ export function ImageCarousel({ images, alt }: ImageCarouselProps) {
               }`}
               aria-label={`View image ${index + 1}`}
             >
-              <img
+              <Image
                 src={image}
                 alt={`${alt} thumbnail ${index + 1}`}
-                className='w-full h-full object-cover'
+                fill
+                className='object-cover'
+                sizes='(max-width: 768px) 25vw, 10vw'
               />
             </button>
           ))}

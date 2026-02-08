@@ -6,6 +6,7 @@ import { Button } from '@workspace/ui/components/button';
 import { mockOrders } from '@/lib/data/mockOrders';
 import { useCart } from '@/context/CartContext';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ChevronDown, ShoppingBag } from 'lucide-react';
 
 export default function OrdersPage() {
@@ -124,10 +125,12 @@ export default function OrdersPage() {
                         key={item.product.id}
                         className='flex gap-4 rounded border border-border bg-background p-4'
                       >
-                        <img
+                        <Image
                           src={item.product.images[0]}
                           alt={item.product.name}
-                          className='h-16 w-16 rounded object-cover'
+                          width={64}
+                          height={64}
+                          className='rounded object-cover'
                         />
                         <div className='flex-1'>
                           <h4 className='font-semibold'>{item.product.name}</h4>

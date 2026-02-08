@@ -4,6 +4,7 @@ import * as React from 'react';
 import { Button } from '@workspace/ui/components/button';
 import { ShoppingCart } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface ProductCardProps {
   id: string;
@@ -28,10 +29,12 @@ export function ProductCard({
     <div className='rounded-lg border border-border bg-card p-4 shadow-sm hover:shadow-md transition-shadow'>
       <Link href={`/products/${id}`}>
         <div className='aspect-square mb-4 overflow-hidden rounded-md bg-secondary cursor-pointer'>
-          <img
+          <Image
             src={images[0]}
             alt={name}
-            className='h-full w-full object-cover hover:scale-105 transition-transform'
+            fill
+            className='object-cover hover:scale-105 transition-transform'
+            sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
           />
         </div>
       </Link>

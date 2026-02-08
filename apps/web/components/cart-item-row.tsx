@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import Image from 'next/image';
 import { Button } from '@workspace/ui/components/button';
 import { Minus, Plus, Trash2 } from 'lucide-react';
 
@@ -25,10 +26,12 @@ export function CartItemRow({
 }: CartItemRowProps) {
   return (
     <div className='flex gap-4 py-4 border-b border-border'>
-      <img
+      <Image
         src={productImages[0]}
         alt={productName}
-        className='h-20 w-20 rounded-lg object-cover bg-secondary'
+        width={80}
+        height={80}
+        className='rounded-lg object-cover bg-secondary'
       />
       <div className='flex flex-1 flex-col'>
         <h3 className='font-semibold'>{productName}</h3>
